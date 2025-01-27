@@ -1,11 +1,25 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { StatsOverview } from "@/components/StatsOverview";
+import { DeckList } from "@/components/DeckList";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gradient-to-b from-mtg-primary to-background p-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-4xl font-bold text-white">MTG Deck Tracker</h1>
+          <Button className="bg-mtg-accent hover:bg-mtg-accent/90">
+            <Plus className="mr-2 h-4 w-4" /> Add New Deck
+          </Button>
+        </div>
+        
+        <StatsOverview />
+        
+        <div>
+          <h2 className="text-2xl font-semibold text-white mb-4">Your Decks</h2>
+          <DeckList />
+        </div>
       </div>
     </div>
   );
