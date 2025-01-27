@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Database, Trophy, Crown, BookOpen } from "lucide-react";
+import { Trophy, Crown, BookOpen } from "lucide-react";
 
 type Deck = {
   id: number;
@@ -57,18 +57,16 @@ export const DeckList = () => {
         <Card key={deck.id} className="hover:shadow-lg transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-lg font-bold">{deck.name}</CardTitle>
-            <Database className="h-5 w-5 text-mtg-accent" />
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center space-x-2 mb-4">
+            <div className="flex items-center space-x-1">
               {deck.colors.map((color) => (
                 <div
                   key={color}
-                  className={`w-6 h-6 rounded-full ${colorMap[color]} border-2 border-white`}
+                  className={`w-4 h-4 rounded-full ${colorMap[color]} border border-white`}
                 />
               ))}
             </div>
-            
+          </CardHeader>
+          <CardContent>
             {deck.commander && (
               <div className="flex items-center space-x-2 mb-3">
                 <Crown className="h-4 w-4 text-mtg-gold" />
