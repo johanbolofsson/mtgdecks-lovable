@@ -32,24 +32,24 @@ const getGradientForColors = (colors: string[]) => {
   const colorKey = sortedColors.join("");
 
   const gradients: Record<string, string> = {
-    // Mono-colored
-    "U": "bg-gradient-to-br from-blue-500 to-blue-700",
+    // Mono-colored - adjusted to darker shades
+    "U": "bg-gradient-to-br from-blue-700 to-blue-900",
     "B": "bg-gradient-to-br from-gray-700 to-gray-900",
     "R": "bg-gradient-to-br from-red-500 to-red-700",
-    "G": "bg-gradient-to-br from-green-500 to-green-700",
-    "W": "bg-gradient-to-br from-yellow-100 to-yellow-300",
+    "G": "bg-gradient-to-br from-green-700 to-green-900",
+    "W": "bg-gradient-to-br from-yellow-500 to-yellow-700",
     
-    // Two-colored
+    // Two-colored - adjusted combinations with darker shades
     "BR": "bg-gradient-to-br from-gray-800 to-red-700",
-    "BG": "bg-gradient-to-br from-gray-800 to-green-700",
-    "BU": "bg-gradient-to-br from-gray-800 to-blue-700",
-    "BW": "bg-gradient-to-br from-gray-800 to-yellow-200",
-    "RG": "bg-gradient-to-br from-red-600 to-green-600",
-    "RU": "bg-gradient-to-br from-red-600 to-blue-600",
-    "RW": "bg-gradient-to-br from-red-600 to-yellow-200",
-    "GU": "bg-gradient-to-br from-green-600 to-blue-600",
-    "GW": "bg-gradient-to-br from-green-600 to-yellow-200",
-    "UW": "bg-gradient-to-br from-blue-600 to-yellow-200",
+    "BG": "bg-gradient-to-br from-gray-800 to-green-800",
+    "BU": "bg-gradient-to-br from-gray-800 to-blue-800",
+    "BW": "bg-gradient-to-br from-gray-800 to-yellow-600",
+    "RG": "bg-gradient-to-br from-red-600 to-green-800",
+    "RU": "bg-gradient-to-br from-red-600 to-blue-800",
+    "RW": "bg-gradient-to-br from-red-600 to-yellow-600",
+    "GU": "bg-gradient-to-br from-green-800 to-blue-800",
+    "GW": "bg-gradient-to-br from-green-800 to-yellow-600",
+    "UW": "bg-gradient-to-br from-blue-800 to-yellow-600",
     
     // Default for 3+ colors or unknown combinations
     "default": "bg-gradient-to-br from-purple-500 to-pink-500"
