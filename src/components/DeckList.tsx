@@ -120,7 +120,7 @@ const AddGameForm = ({ deckId, onGameAdded }: AddGameFormProps) => {
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-4">
         {opponents.map((opponent, index) => (
-          <div key={index} className="space-y-2 p-4 bg-gray-50 rounded-lg relative">
+          <div key={index} className="space-y-2 p-4 bg-secondary rounded-lg relative">
             <div className="flex justify-between items-center">
               <Label>Opponent {index + 1}</Label>
               {opponents.length > 1 && (
