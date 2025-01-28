@@ -16,10 +16,7 @@ const Index = () => {
         
         <StatsOverview />
         
-        <div>
-          <h2 className="text-2xl font-semibold text-white mb-4">Your Decks</h2>
-          <DeckList />
-        </div>
+        <DeckList />
       </div>
     </div>
   );

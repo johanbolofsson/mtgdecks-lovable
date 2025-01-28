@@ -73,13 +73,16 @@ export const DeckList = () => {
 
   return (
     <div className="space-y-6">
-      <Input
-        type="search"
-        placeholder="Search decks by name, commander, or format..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="max-w-md mx-auto"
-      />
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-2xl font-semibold text-white">Your Decks</h2>
+        <Input
+          type="search"
+          placeholder="Search decks by name, commander, or format..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full sm:w-96"
+        />
+      </div>
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredDecks.map((deck) => (
