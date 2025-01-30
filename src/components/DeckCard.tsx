@@ -58,7 +58,7 @@ export const DeckCard = ({ deck, colorMap, onGameAdded }: DeckCardProps) => {
   const gradientClass = getGradientForColors(deck.colors);
   
   return (
-    <div className="relative group">
+    <div className="relative group h-fit">
       <div className={`absolute -inset-0.5 rounded-lg bg-gradient-to-br ${gradientClass} opacity-75 group-hover:opacity-100 transition duration-200`} />
       <Card className="relative bg-card">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
