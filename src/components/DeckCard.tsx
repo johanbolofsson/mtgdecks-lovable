@@ -27,32 +27,31 @@ type DeckCardProps = {
 };
 
 const getGradientForColors = (colors: string[]) => {
-  // Sort colors to ensure consistent gradients
   const sortedColors = [...colors].sort();
   const colorKey = sortedColors.join("");
 
   const gradients: Record<string, string> = {
-    // Mono-colored - adjusted to darker shades
-    "U": "bg-gradient-to-br from-blue-700 to-blue-900",
-    "B": "bg-gradient-to-br from-gray-700 to-gray-900",
-    "R": "bg-gradient-to-br from-red-500 to-red-700",
-    "G": "bg-gradient-to-br from-green-700 to-green-900",
-    "W": "bg-gradient-to-br from-yellow-500 to-yellow-700",
+    // Mono-colored
+    "U": "from-blue-700 to-blue-900",
+    "B": "from-gray-700 to-gray-900",
+    "R": "from-red-500 to-red-700",
+    "G": "from-green-700 to-green-900",
+    "W": "from-yellow-500 to-yellow-700",
     
-    // Two-colored - adjusted combinations with darker shades
-    "BR": "bg-gradient-to-br from-gray-800 to-red-700",
-    "BG": "bg-gradient-to-br from-gray-800 to-green-800",
-    "BU": "bg-gradient-to-br from-gray-800 to-blue-800",
-    "BW": "bg-gradient-to-br from-gray-800 to-yellow-600",
-    "RG": "bg-gradient-to-br from-red-600 to-green-800",
-    "RU": "bg-gradient-to-br from-red-600 to-blue-800",
-    "RW": "bg-gradient-to-br from-red-600 to-yellow-600",
-    "GU": "bg-gradient-to-br from-green-800 to-blue-800",
-    "GW": "bg-gradient-to-br from-green-800 to-yellow-600",
-    "UW": "bg-gradient-to-br from-blue-800 to-yellow-600",
+    // Two-colored
+    "BR": "from-gray-800 to-red-700",
+    "BG": "from-gray-800 to-green-800",
+    "BU": "from-gray-800 to-blue-800",
+    "BW": "from-gray-800 to-yellow-600",
+    "RG": "from-red-600 to-green-800",
+    "RU": "from-red-600 to-blue-800",
+    "RW": "from-red-600 to-yellow-600",
+    "GU": "from-green-800 to-blue-800",
+    "GW": "from-green-800 to-yellow-600",
+    "UW": "from-blue-800 to-yellow-600",
     
     // Default for 3+ colors or unknown combinations
-    "default": "bg-gradient-to-br from-purple-500 to-pink-500"
+    "default": "from-purple-500 to-pink-500"
   };
 
   return gradients[colorKey] || gradients.default;
@@ -62,7 +61,7 @@ export const DeckCard = ({ deck, colorMap, onGameAdded }: DeckCardProps) => {
   const gradientClass = getGradientForColors(deck.colors);
   
   return (
-    <Card className={`hover:shadow-lg transition-shadow ${gradientClass} text-white`}>
+    <Card className={`relative hover:shadow-lg transition-shadow before:absolute before:inset-0 before:p-[2px] before:rounded-lg before:bg-gradient-to-br before:${gradientClass} before:-z-10 before:content-[''] bg-card`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-lg font-bold">{deck.name}</CardTitle>
         <div className="flex items-center space-x-1">
