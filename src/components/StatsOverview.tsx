@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy, List, ChartBar } from "lucide-react";
+import { Trophy, List, ChartBar, Plus } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export const StatsOverview = () => {
   return (
@@ -10,7 +11,12 @@ export const StatsOverview = () => {
           <List className="h-4 w-4 text-mtg-accent" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">3</div>
+          <div className="flex flex-col space-y-2">
+            <div className="text-2xl font-bold">3</div>
+            <Button className="bg-mtg-accent hover:bg-mtg-accent/90 w-full">
+              <Plus className="mr-2 h-4 w-4" /> Add New Deck
+            </Button>
+          </div>
         </CardContent>
       </Card>
       <Card className="hover:shadow-lg transition-shadow">
@@ -19,7 +25,12 @@ export const StatsOverview = () => {
           <ChartBar className="h-4 w-4 text-mtg-accent" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">60</div>
+          <div className="flex flex-col space-y-2">
+            <div className="text-2xl font-bold">60</div>
+            <Button className="bg-mtg-accent hover:bg-mtg-accent/90 w-full">
+              <Plus className="mr-2 h-4 w-4" /> Add Game
+            </Button>
+          </div>
         </CardContent>
       </Card>
       <Card className="hover:shadow-lg transition-shadow">
