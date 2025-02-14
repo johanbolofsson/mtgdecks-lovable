@@ -13,8 +13,8 @@ type Deck = {
     colors: string[];
     commander?: string;
     format?: string;
-    winRate: number;
-    totalGames: number;
+    winRate?: number;
+    totalGames?: number;
   };
 };
 
