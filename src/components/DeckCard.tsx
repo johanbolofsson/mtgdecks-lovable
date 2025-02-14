@@ -25,7 +25,7 @@ type DeckCardProps = {
     format?: string;
   };
   colorMap: Record<string, string>;
-  onGameAdded: (deckId: number) => void;
+  onGameAdded: (deckId: string) => void;
 };
 
 const getGradientForColors = (colors: string[]) => {
