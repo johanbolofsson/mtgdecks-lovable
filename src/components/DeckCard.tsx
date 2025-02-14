@@ -66,11 +66,11 @@ const getGradientForColors = (colors: string[]) => {
     "WUG": "from-yellow-600 via-blue-800 to-green-800", // Bant
     
     // Four color gradients
-    "WBRG": "from-gray-800 via-red-700 via-green-800 to-yellow-600", //Dune
-    "UBRG": "from-gray-800 via-red-700 via-green-800 to-blue-800", //Glint
-    "WUBR": "from-gray-800 via-red-700 via-blue-800 to-yellow-600", //Yore
-    "WUBG": "from-gray-800 via-green-800 via-blue-800 to-yellow-600", //Witch
-    "WURG": "from-red-700 via-green-800 via-blue-800 to-yellow-600", //Ink
+    "WBRG": "from-yellow-600 via-gray-800 via-red-700 to-green-800", //Dune
+    "UBRG": "from-blue-800 via-gray-800 via-red-700 to-green-800", //Glint
+    "WUBR": "from-yellow-600 via-blue-800 via-gray-800 to-red-700", //Yore
+    "WUBG": "from-yellow-600 via-blue-800 via-gray-800 to-green-800", //Witch
+    "WURG": "from-yellow-600 via-blue-800 via-red-700 to-green-800", //Ink
 
     // Five color gradients
     "WUBRG": "from-yellow-600 via-blue-800 via-gray-800 via-red-700 to-green-800", //WUBRG
