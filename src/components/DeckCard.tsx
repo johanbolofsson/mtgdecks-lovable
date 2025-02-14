@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus } from "lucide-react";
@@ -33,11 +34,14 @@ const getGradientForColors = (colors: string[]) => {
   const colorKey = sortedColors.join("");
 
   const gradients: Record<string, string> = {
+    // Single color gradients
     "U": "from-blue-700 to-blue-900",
     "B": "from-gray-700 to-gray-900",
     "R": "from-red-500 to-red-700",
     "G": "from-green-700 to-green-900",
     "W": "from-yellow-500 to-yellow-700",
+    
+    // Two color gradients
     "BR": "from-gray-800 to-red-700",
     "BG": "from-gray-800 to-green-800",
     "BU": "from-gray-800 to-blue-800",
@@ -48,6 +52,27 @@ const getGradientForColors = (colors: string[]) => {
     "GU": "from-green-800 to-blue-800",
     "GW": "from-green-800 to-yellow-600",
     "UW": "from-blue-800 to-yellow-600",
+    
+    // Three color gradients
+    "BRG": "from-gray-800 via-red-700 to-green-800", // Jund
+    "BRW": "from-gray-800 via-red-700 to-yellow-600", // Mardu
+    "BGU": "from-gray-800 via-green-800 to-blue-800", // Sultai
+    "BGW": "from-gray-800 via-green-800 to-yellow-600", // Abzan
+    "BRU": "from-gray-800 via-red-700 to-blue-800", // Grixis
+    "BUW": "from-gray-800 via-blue-800 to-yellow-600", // Esper
+    "RGU": "from-red-700 via-green-800 to-blue-800", // Temur
+    "RGW": "from-red-700 via-green-800 to-yellow-600", // Naya
+    "RUW": "from-red-700 via-blue-800 to-yellow-600", // Jeskai
+    "GUW": "from-green-800 via-blue-800 to-yellow-600", // Bant
+    
+    // Four color gradients
+    "BRGW": "from-gray-800 via-red-700 via-green-800 to-yellow-600",
+    "BRGU": "from-gray-800 via-red-700 via-green-800 to-blue-800",
+    "BRUW": "from-gray-800 via-red-700 via-blue-800 to-yellow-600",
+    "BGUW": "from-gray-800 via-green-800 via-blue-800 to-yellow-600",
+    "RGUW": "from-red-700 via-green-800 via-blue-800 to-yellow-600",
+    
+    // Default gradient
     "default": "from-purple-500 to-pink-500"
   };
 
