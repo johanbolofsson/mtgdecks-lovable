@@ -19,11 +19,11 @@ type Deck = {
 };
 
 const colorMap: Record<string, string> = {
-  U: "bg-blue-500",
-  B: "bg-gray-800",
-  R: "bg-red-500",
-  G: "bg-green-500",
-  W: "bg-yellow-100",
+  W: "bg-yellow-100", // White
+  U: "bg-blue-500",   // Blue
+  B: "bg-gray-800",   // Black
+  R: "bg-red-500",    // Red
+  G: "bg-green-500"   // Green
 };
 
 const DeckSkeleton = () => (
