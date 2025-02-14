@@ -1,12 +1,30 @@
+
 import { Button } from "@/components/ui/button";
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
-import { GamepadIcon, Grid, Menu, Plus, User } from "lucide-react";
-import { Link } from "react-router-dom";
+import { GamepadIcon, Grid, LogOut, Menu, Plus, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "./ui/use-toast";
 
 export const TopMenuBar = () => {
   const [open, setOpen] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Error signing out",
+        description: error.message,
+      });
+    } else {
+      navigate("/auth");
+    }
+  };
 
   const menuItems = [
     { icon: <GamepadIcon className="h-4 w-4" />, label: "Games", link: "/games" },
@@ -27,6 +45,14 @@ export const TopMenuBar = () => {
           <span>{item.label}</span>
         </Link>
       ))}
+      <Button
+        variant="ghost"
+        className="w-full justify-start text-white hover:text-mtg-accent"
+        onClick={handleSignOut}
+      >
+        <LogOut className="h-4 w-4 mr-2" />
+        Sign Out
+      </Button>
     </div>
   );
 
@@ -65,9 +91,18 @@ export const TopMenuBar = () => {
         ))}
       </Menubar>
 
-      <Button className="bg-mtg-accent hover:bg-mtg-accent/90">
-        <Plus className="mr-2 h-4 w-4" /> Add New Deck
-      </Button>
+      <div className="flex items-center gap-2">
+        <Button className="bg-mtg-accent hover:bg-mtg-accent/90">
+          <Plus className="mr-2 h-4 w-4" /> Add New Deck
+        </Button>
+        <Button
+          variant="ghost"
+          className="text-white hover:bg-mtg-primary/50"
+          onClick={handleSignOut}
+        >
+          <LogOut className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
   );
 };
