@@ -11,7 +11,7 @@ type Opponent = {
 };
 
 type AddGameFormProps = {
-  deckId: number;
+  deckId: string;
   onGameAdded: () => void;
 };
 
