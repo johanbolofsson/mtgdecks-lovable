@@ -1,45 +1,22 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { DeckCard } from "./DeckCard";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Deck = {
-  id: number;
+  id: string;
   name: string;
-  colors: string[];
-  winRate: number;
-  totalGames: number;
-  commander?: string;
-  format?: string;
+  properties: {
+    colors: string[];
+    commander?: string;
+    format?: string;
+    winRate: number;
+    totalGames: number;
+  };
 };
-
-const mockDecks: Deck[] = [
-  { 
-    id: 1, 
-    name: "Blue Control", 
-    colors: ["U"], 
-    winRate: 65, 
-    totalGames: 20,
-    commander: "Urza, Lord High Artificer",
-    format: "Commander"
-  },
-  { 
-    id: 2, 
-    name: "Rakdos Aggro", 
-    colors: ["R", "B"], 
-    winRate: 55, 
-    totalGames: 15,
-    format: "Modern"
-  },
-  { 
-    id: 3, 
-    name: "Selesnya Tokens", 
-    colors: ["G", "W"], 
-    winRate: 48, 
-    totalGames: 25,
-    commander: "Rhys the Redeemed",
-    format: "Commander"
-  },
-];
 
 const colorMap: Record<string, string> = {
   U: "bg-blue-500",
@@ -49,27 +26,32 @@ const colorMap: Record<string, string> = {
   W: "bg-yellow-100",
 };
 
+const DeckSkeleton = () => (
+  <div className="space-y-4">
+    <Skeleton className="h-32 w-full rounded-lg" />
+  </div>
+);
+
 export const DeckList = () => {
-  const [decks, setDecks] = React.useState(mockDecks);
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  const handleGameAdded = (deckId: number) => {
-    setDecks(decks.map(deck => {
-      if (deck.id === deckId) {
-        return {
-          ...deck,
-          totalGames: deck.totalGames + 1,
-        };
-      }
-      return deck;
-    }));
-  };
+  const { data: decks, isLoading } = useQuery({
+    queryKey: ["decks"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("deck")
+        .select("id, name, properties");
 
-  const filteredDecks = decks.filter(deck => 
-    deck.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    deck.commander?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    deck.format?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      if (error) throw error;
+      return data as Deck[];
+    },
+  });
+
+  const filteredDecks = decks?.filter((deck) => 
+    deck.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    deck.properties.commander?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    deck.properties.format?.toLowerCase().includes(searchQuery.toLowerCase())
+  ) ?? [];
 
   return (
     <div className="space-y-6">
@@ -85,12 +67,24 @@ export const DeckList = () => {
       </div>
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {filteredDecks.map((deck) => (
+        {isLoading ? (
+          Array.from({ length: 6 }).map((_, i) => <DeckSkeleton key={i} />)
+        ) : filteredDecks.map((deck) => (
           <DeckCard
             key={deck.id}
-            deck={deck}
+            deck={{
+              id: deck.id,
+              name: deck.name || "Unnamed Deck",
+              colors: deck.properties.colors || [],
+              winRate: deck.properties.winRate || 0,
+              totalGames: deck.properties.totalGames || 0,
+              commander: deck.properties.commander,
+              format: deck.properties.format,
+            }}
             colorMap={colorMap}
-            onGameAdded={handleGameAdded}
+            onGameAdded={() => {
+              // Will implement game addition later
+            }}
           />
         ))}
       </div>
