@@ -30,10 +30,10 @@ type DeckCardProps = {
 };
 
 const getGradientForColors = (colors: string[]) => {
-  const sortedColors = [...colors].sort();
-  const colorKey = sortedColors.join("");
+ 
+  const colorKey = [...colors].join("");
 
-  const gradients: Record<string, string> = {
+    const gradients: Record<string, string> = {
     // Single color gradients
     "U": "from-blue-700 to-blue-900",
     "B": "from-gray-700 to-gray-900",
@@ -42,42 +42,85 @@ const getGradientForColors = (colors: string[]) => {
     "W": "from-yellow-500 to-yellow-700",
     
     // Two color gradients
-    "BR": "from-gray-800 to-red-700",
-    "BG": "from-gray-800 to-green-800",
-    "BU": "from-gray-800 to-blue-800",
-    "BW": "from-gray-800 to-yellow-600",
-    "RG": "from-red-600 to-green-800",
-    "RU": "from-red-600 to-blue-800",
-    "RW": "from-red-600 to-yellow-600",
-    "GU": "from-green-800 to-blue-800",
-    "GW": "from-green-800 to-yellow-600",
-    "UW": "from-blue-800 to-yellow-600",
+    "BR": "from-gray-800 to-red-700", //Rakdos
+    "BG": "from-gray-800 to-green-800", //Golgari
+    "UB": "from-blue-800 to-gray-800", //Dimir
+    "WB": "from-yellow-600 to-gray-800", //Orzhov
+    "RG": "from-red-700 to-green-800", //Gruul
+    "UR": "from-blue-800 to-red-700", //Izzet
+    "WR": "from-yellow-600 to-red-700", //Boros
+    "UG": "from-blue-800 to-green-800", //Simic
+    "WG": "from-yellow-600 to-green-800", //Selesnya
+    "WU": "from-yellow-600 to-blue-800", //Azorius
     
     // Three color gradients
     "BRG": "from-gray-800 via-red-700 to-green-800", // Jund
-    "BRW": "from-gray-800 via-red-700 to-yellow-600", // Mardu
-    "BGU": "from-gray-800 via-green-800 to-blue-800", // Sultai
-    "BGW": "from-gray-800 via-green-800 to-yellow-600", // Abzan
-    "BRU": "from-gray-800 via-red-700 to-blue-800", // Grixis
-    "BUW": "from-gray-800 via-blue-800 to-yellow-600", // Esper
-    "RGU": "from-red-700 via-green-800 to-blue-800", // Temur
-    "RGW": "from-red-700 via-green-800 to-yellow-600", // Naya
-    "RUW": "from-red-700 via-blue-800 to-yellow-600", // Jeskai
-    "GUW": "from-green-800 via-blue-800 to-yellow-600", // Bant
+    "WBR": "from-yellow-600 via-red-700 to-gray-800", // Mardu
+    "UBG": "from-blue-800 via-gray-800 to-green-800", // Sultai
+    "WBG": "from-yellow-600 via-gray-800 to-green-800", // Abzan
+    "UBR": "from-blue-800 via-gray-800 to-red-700", // Grixis
+    "WUB": "from-yellow-600 via-blue-800 to-gray-800", // Esper
+    "URG": "from-blue-800 via-red-700 to-green-800", // Temur
+    "WRG": "from-yellow-600 via-red-700 to-green-800", // Naya
+    "WUR": "from-yellow-600 via-blue-800 to-red-700", // Jeskai
+    "WUG": "from-yellow-600 via-blue-800 to-green-800", // Bant
     
     // Four color gradients
-    "BRGW": "from-gray-800 via-red-700 via-green-800 to-yellow-600",
-    "BRGU": "from-gray-800 via-red-700 via-green-800 to-blue-800",
-    "BRUW": "from-gray-800 via-red-700 via-blue-800 to-yellow-600",
-    "BGUW": "from-gray-800 via-green-800 via-blue-800 to-yellow-600",
-    "RGUW": "from-red-700 via-green-800 via-blue-800 to-yellow-600",
+    "WBRG": "from-gray-800 via-red-700 via-green-800 to-yellow-600", //Dune
+    "UBRG": "from-gray-800 via-red-700 via-green-800 to-blue-800", //Glint
+    "WUBR": "from-gray-800 via-red-700 via-blue-800 to-yellow-600", //Yore
+    "WUBG": "from-gray-800 via-green-800 via-blue-800 to-yellow-600", //Witch
+    "WURG": "from-red-700 via-green-800 via-blue-800 to-yellow-600", //Ink
+
+    // Five color gradients
+    "WUBRG": "from-yellow-600 via-blue-800 via-gray-800 via-red-700 to-green-800", //WUBRG
     
     // Default gradient
-    "default": "from-purple-500 to-pink-500"
+    "default": "from-gray-700 to-gray-900" //Colorless
   };
 
-  return gradients[colorKey] || gradients.default;
+  if (gradients[colorKey]) return gradients[colorKey];
+
+  // Generate all permutations of the input letters
+  const letters = colorKey.split("");
+  const permutations = permute(letters);
+
+  for (const perm of permutations) {
+    const key = perm.join("");
+    if (gradients[key]) {
+      return gradients[key];
+    }
+  }
+
+  // Return default gradient if no match is found
+  return gradients["default"];
+
 };
+
+/**
+ * Generate all permutations of an array of characters.
+ * @param arr An array of characters.
+ * @returns An array of all possible permutations (each permutation is an array of characters).
+ */
+function permute(arr: string[]): string[][] {
+  if (arr.length === 1) return [arr];
+
+  const result: string[][] = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    const currentChar = arr[i];
+    // Get the remaining array without the current character
+    const remaining = [...arr.slice(0, i), ...arr.slice(i + 1)];
+    // Recursively get permutations of the remaining characters
+    const remainingPermutations = permute(remaining);
+    // Add the current character to the beginning of each permutation of the remaining characters
+    for (const perm of remainingPermutations) {
+      result.push([currentChar, ...perm]);
+    }
+  }
+
+  return result;
+}
 
 export const DeckCard = ({ deck, colorMap, onGameAdded }: DeckCardProps) => {
   const gradientClass = getGradientForColors(deck.colors);
