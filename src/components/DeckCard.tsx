@@ -16,7 +16,7 @@ import { DeckMetadata } from "./deck/DeckMetadata";
 
 type DeckCardProps = {
   deck: {
-    id: number;
+    id: string;
     name: string;
     colors: string[];
     winRate: number;
