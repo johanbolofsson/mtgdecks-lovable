@@ -7,6 +7,8 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "./ui/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { CreateDeckForm } from "./deck/CreateDeckForm";
 
 export const TopMenuBar = () => {
   const [open, setOpen] = useState(false);
@@ -92,9 +94,19 @@ export const TopMenuBar = () => {
       </Menubar>
 
       <div className="flex items-center gap-2">
-        <Button className="bg-mtg-accent hover:bg-mtg-accent/90">
-          <Plus className="mr-2 h-4 w-4" /> Add New Deck
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="bg-mtg-accent hover:bg-mtg-accent/90">
+              <Plus className="mr-2 h-4 w-4" /> Add New Deck
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create New Deck</DialogTitle>
+            </DialogHeader>
+            <CreateDeckForm />
+          </DialogContent>
+        </Dialog>
         <Button
           variant="ghost"
           className="text-white hover:bg-mtg-primary/50"
