@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,6 +13,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { useNavigate } from "react-router-dom";
 
 const MTG_COLORS = [
   { id: "W", label: "White" },
@@ -42,19 +42,16 @@ export function CreateDeckForm() {
   const [format, setFormat] = useState<string>("");
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleColorChange = (colorId: string, checked: boolean) => {
     if (colorId === "C" && checked) {
-      // If Colorless is selected, clear all other colors
       setSelectedColors(["C"]);
     } else if (colorId === "C" && !checked) {
-      // If Colorless is unselected, just remove it
       setSelectedColors([]);
     } else if (selectedColors.includes("C")) {
-      // If another color is selected and Colorless was previously selected
       setSelectedColors([colorId]);
     } else {
-      // Normal color selection/deselection
       setSelectedColors(prev =>
         checked
           ? [...prev, colorId]
@@ -90,9 +87,9 @@ export function CreateDeckForm() {
         title: "Deck created successfully",
         description: `Created deck: ${name}`,
       });
-      // Close the dialog using the DialogClose component
       const closeButton = document.querySelector("[data-dialog-close]") as HTMLButtonElement;
       if (closeButton) closeButton.click();
+      navigate(0);
     }
   };
 
