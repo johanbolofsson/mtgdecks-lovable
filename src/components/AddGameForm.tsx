@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 type AddGameFormProps = {
   deckId: string;
@@ -13,22 +14,49 @@ type AddGameFormProps = {
 export const AddGameForm = ({ deckId, onGameAdded }: AddGameFormProps) => {
   const { toast } = useToast();
   const [result, setResult] = React.useState<"win" | "loss">("win");
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    console.log("New game added:", {
-      deckId,
-      result,
-      timestamp: new Date(),
-    });
+    setIsSubmitting(true);
 
-    toast({
-      title: "Game Added",
-      description: `Recorded ${result} for this deck`,
-    });
+    try {
+      // First, create a new game
+      const { data: gameData, error: gameError } = await supabase
+        .from("game")
+        .insert({})
+        .select()
+        .single();
 
-    onGameAdded();
+      if (gameError) throw gameError;
+
+      // Then create the game details
+      const { error: detailsError } = await supabase
+        .from("game_details")
+        .insert({
+          game_id: gameData.id,
+          deck_id: deckId,
+          winner: result === "win",
+        });
+
+      if (detailsError) throw detailsError;
+
+      toast({
+        title: "Game Added",
+        description: `Recorded ${result} for this deck`,
+      });
+
+      onGameAdded();
+    } catch (error) {
+      console.error("Error saving game:", error);
+      toast({
+        variant: "destructive",
+        title: "Error saving game",
+        description: "There was an error saving your game. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -48,8 +76,8 @@ export const AddGameForm = ({ deckId, onGameAdded }: AddGameFormProps) => {
         </div>
       </RadioGroup>
 
-      <Button type="submit" className="w-full">
-        Add Game
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
+        {isSubmitting ? "Saving..." : "Add Game"}
       </Button>
     </form>
   );
