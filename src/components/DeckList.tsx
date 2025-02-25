@@ -13,9 +13,12 @@ type Deck = {
     colors: string[];
     commander?: string;
     format?: string;
-    winRate?: number;
-    totalGames?: number;
   };
+};
+
+type DeckWithStats = Deck & {
+  winRate: number;
+  totalGames: number;
 };
 
 const colorMap: Record<string, string> = {
@@ -35,19 +38,41 @@ const DeckSkeleton = () => (
 export const DeckList = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  const { data: decks, isLoading } = useQuery({
-    queryKey: ["decks"],
+  const { data: decksWithStats, isLoading } = useQuery({
+    queryKey: ["decks-with-stats"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // First, get all decks
+      const { data: decks, error: decksError } = await supabase
         .from("deck")
         .select("id, name, properties");
 
-      if (error) throw error;
-      return data as Deck[];
+      if (decksError) throw decksError;
+
+      // Then, get game statistics for each deck
+      const decksWithStats = await Promise.all((decks as Deck[]).map(async (deck) => {
+        const { data: gameDetails, error: statsError } = await supabase
+          .from("game_details")
+          .select("winner")
+          .eq("deck_id", deck.id);
+
+        if (statsError) throw statsError;
+
+        const totalGames = gameDetails?.length || 0;
+        const wins = gameDetails?.filter(game => game.winner)?.length || 0;
+        const winRate = totalGames > 0 ? Math.round((wins / totalGames) * 100) : 0;
+
+        return {
+          ...deck,
+          winRate,
+          totalGames
+        };
+      }));
+
+      return decksWithStats;
     },
   });
 
-  const filteredDecks = decks?.filter((deck) => 
+  const filteredDecks = decksWithStats?.filter((deck) => 
     deck.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     deck.properties.commander?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     deck.properties.format?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -76,8 +101,8 @@ export const DeckList = () => {
               id: deck.id,
               name: deck.name || "Unnamed Deck",
               colors: deck.properties.colors || [],
-              winRate: deck.properties.winRate || 0,
-              totalGames: deck.properties.totalGames || 0,
+              winRate: deck.winRate,
+              totalGames: deck.totalGames,
               commander: deck.properties.commander,
               format: deck.properties.format,
             }}
