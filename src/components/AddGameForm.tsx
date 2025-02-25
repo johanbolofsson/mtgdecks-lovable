@@ -5,6 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 
 type AddGameFormProps = {
   deckId: string;
@@ -13,30 +14,41 @@ type AddGameFormProps = {
 
 export const AddGameForm = ({ deckId, onGameAdded }: AddGameFormProps) => {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [result, setResult] = React.useState<"win" | "loss">("win");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      toast({
+        variant: "destructive",
+        title: "Error saving game",
+        description: "You must be logged in to add a game.",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
-      // First, create a new game
+      // First, create a new game with the player_id
       const { data: gameData, error: gameError } = await supabase
         .from("game")
-        .insert({})
+        .insert({ player_id: user.id })
         .select()
         .single();
 
       if (gameError) throw gameError;
 
-      // Then create the game details
+      // Then create the game details with the player_id
       const { error: detailsError } = await supabase
         .from("game_details")
         .insert({
           game_id: gameData.id,
           deck_id: deckId,
           winner: result === "win",
+          player_id: user.id
         });
 
       if (detailsError) throw detailsError;
