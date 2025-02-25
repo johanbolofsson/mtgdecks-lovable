@@ -32,10 +32,10 @@ export const AddGameForm = ({ deckId, onGameAdded }: AddGameFormProps) => {
     setIsSubmitting(true);
 
     try {
-      // First, create a new game with the player_id
+      // First, create a new game (no player_id needed as per updated schema)
       const { data: gameData, error: gameError } = await supabase
         .from("game")
-        .insert({ player_id: user.id })
+        .insert({})
         .select()
         .single();
 
