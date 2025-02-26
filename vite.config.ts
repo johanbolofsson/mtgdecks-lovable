@@ -4,7 +4,6 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
@@ -24,39 +23,39 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Create separate chunks for major dependencies
+          // Create micro-chunks for better code splitting
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-vendor';
+              return 'react-core';
             }
             if (id.includes('@radix-ui')) {
-              // Split Radix UI components into separate chunks
               const componentName = id.split('@radix-ui/')[1]?.split('/')[0];
-              return `radix-${componentName}`;
+              return `ui-${componentName}`;
             }
             if (id.includes('lucide-react')) {
-              return 'icons';
+              const iconName = id.split('lucide-react/dist/')[1]?.split('.')[0];
+              return iconName ? `icon-${iconName}` : 'icons-core';
             }
             if (id.includes('@tanstack/react-query')) {
-              return 'react-query';
+              return 'query';
             }
-            if (id.includes('recharts')) {
-              return 'charts';
-            }
+            // Group smaller dependencies
             return 'vendor';
           }
-          // Split application code into features
+          // Split application code into smaller features
           if (id.includes('/components/')) {
-            if (id.includes('/ui/')) {
-              return 'ui-components';
-            }
-            if (id.includes('/deck/')) {
-              return 'deck-features';
-            }
-            return 'components';
+            const componentType = id.split('/components/')[1]?.split('/')[0];
+            return `component-${componentType}`;
           }
           if (id.includes('/pages/')) {
-            return 'pages';
+            const pageName = id.split('/pages/')[1]?.split('.')[0];
+            return `page-${pageName}`;
+          }
+          if (id.includes('/hooks/')) {
+            return 'hooks';
+          }
+          if (id.includes('/lib/')) {
+            return 'utils';
           }
         }
       }
@@ -68,17 +67,31 @@ export default defineConfig(({ mode }) => ({
         drop_console: true,
         drop_debugger: true,
         pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.trace'],
-        passes: 3
+        passes: 5,
+        unsafe: true,
+        unsafe_arrows: true,
+        unsafe_comps: true,
+        unsafe_Function: true,
+        unsafe_math: true,
+        unsafe_methods: true,
+        unsafe_proto: true,
+        unsafe_regexp: true,
+        unsafe_undefined: true
       },
       mangle: {
-        properties: false
+        properties: {
+          regex: /^_/
+        }
+      },
+      format: {
+        comments: false
       }
     },
     reportCompressedSize: false,
-    chunkSizeWarningLimit: 500,
+    chunkSizeWarningLimit: 250,
     cssMinify: true,
     cssCodeSplit: true,
-    assetsInlineLimit: 4096,
+    assetsInlineLimit: 2048, // Reduced from 4096
     sourcemap: false
   }
 }));
