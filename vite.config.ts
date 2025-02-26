@@ -23,7 +23,6 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          // Create micro-chunks for better code splitting
           if (id.includes('node_modules')) {
             if (id.includes('react') || id.includes('react-dom')) {
               return 'react-core';
@@ -39,10 +38,8 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('@tanstack/react-query')) {
               return 'query';
             }
-            // Group smaller dependencies
             return 'vendor';
           }
-          // Split application code into smaller features
           if (id.includes('/components/')) {
             const componentType = id.split('/components/')[1]?.split('/')[0];
             return `component-${componentType}`;
@@ -91,7 +88,7 @@ export default defineConfig(({ mode }) => ({
     chunkSizeWarningLimit: 250,
     cssMinify: true,
     cssCodeSplit: true,
-    assetsInlineLimit: 2048, // Reduced from 4096
+    assetsInlineLimit: 2048,
     sourcemap: false
   }
 }));
