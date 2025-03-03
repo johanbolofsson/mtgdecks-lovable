@@ -1,12 +1,4 @@
 
-import { useToast as useNativeToast, ToastProps } from "@/hooks/use-native-toast";
+import { useToast, toast } from "@/hooks/use-toast";
 
-export const useToast = () => {
-  return useNativeToast();
-};
-
-export const toast = (props: Omit<ToastProps, "id">) => {
-  // This is just a placeholder - the actual implementation will use the hook context
-  // The component using this will properly use the hook
-  return "";
-};
+export { useToast, toast };

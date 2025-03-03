@@ -1,12 +1,17 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { NativeCheckbox } from "@/components/ui/native-checkbox";
-import { NativeSelect } from "@/components/ui/native-select";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-native-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { useNavigate } from "react-router-dom";
 
@@ -111,14 +116,18 @@ export function CreateDeckForm() {
 
       <div className="space-y-2">
         <Label htmlFor="format">Format</Label>
-        <NativeSelect
-          id="format"
-          value={format}
-          options={MTG_FORMATS.map(fmt => ({ value: fmt, label: fmt }))}
-          onChange={setFormat}
-          placeholder="Select a format"
-          required
-        />
+        <Select value={format} onValueChange={setFormat} required>
+          <SelectTrigger>
+            <SelectValue placeholder="Select a format" />
+          </SelectTrigger>
+          <SelectContent>
+            {MTG_FORMATS.map((format) => (
+              <SelectItem key={format} value={format}>
+                {format}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="space-y-2">
@@ -126,7 +135,7 @@ export function CreateDeckForm() {
         <div className="grid grid-cols-2 gap-4">
           {MTG_COLORS.map((color) => (
             <div key={color.id} className="flex items-center space-x-2">
-              <NativeCheckbox
+              <Checkbox
                 id={`color-${color.id}`}
                 checked={selectedColors.includes(color.id)}
                 onCheckedChange={(checked) => 
