@@ -11,7 +11,7 @@ export interface ToastProps {
 
 interface ToastContextType {
   toasts: ToastProps[];
-  toast: (props: Omit<ToastProps, "id">) => void;
+  toast: (props: Omit<ToastProps, "id">) => string;
   dismiss: (id: string) => void;
 }
 
