@@ -1,0 +1,1 @@
+import{j as o}from"./react-core-CnGHm5UM.js";import{D as r}from"./component-DeckList.tsx-ftQDX1it.js";import{T as s}from"./component-TopMenuBar.tsx-CfOPaBsC.js";const a=()=>o.jsx("div",{className:"min-h-screen bg-gradient-to-b from-mtg-primary to-background p-8",children:o.jsxs("div",{className:"max-w-7xl mx-auto space-y-8",children:[o.jsx(s,{}),o.jsx(r,{})]})});export{a as I};

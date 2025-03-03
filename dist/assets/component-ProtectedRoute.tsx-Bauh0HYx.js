@@ -1,0 +1,1 @@
+import{j as o,N as r}from"./react-core-CnGHm5UM.js";import{u as s}from"./component-AddGameForm.tsx-Cddvg6Xq.js";const t=({children:t})=>{const{user:e,isLoading:n}=s();return n?o.jsx("div",{children:"Loading..."}):e?o.jsx(o.Fragment,{children:t}):o.jsx(r,{to:"/auth"})};export{t as P};
