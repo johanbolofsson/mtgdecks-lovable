@@ -123,7 +123,12 @@ function permute(arr: string[]): string[][] {
 }
 
 export const DeckCard = ({ deck, colorMap, onGameAdded }: DeckCardProps) => {
-  const gradientClass = getGradientForColors(deck.colors);
+  // Ensure we always have a valid colors array
+  const safeColors = Array.isArray(deck.colors) && deck.colors.length > 0 
+    ? deck.colors 
+    : ["C"]; // Default to colorless if no colors provided
+  
+  const gradientClass = getGradientForColors(safeColors);
   
   return (
     <div className="relative group h-fit">
@@ -131,7 +136,7 @@ export const DeckCard = ({ deck, colorMap, onGameAdded }: DeckCardProps) => {
       <Card className="relative bg-card">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-lg font-bold">{deck.name}</CardTitle>
-          <ColorIdentity colors={deck.colors} colorMap={colorMap} />
+          <ColorIdentity colors={safeColors} colorMap={colorMap} />
         </CardHeader>
         <CardContent>
           <DeckMetadata commander={deck.commander} format={deck.format} />

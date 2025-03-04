@@ -26,7 +26,8 @@ const colorMap: Record<string, string> = {
   U: "bg-blue-500",   // Blue
   B: "bg-gray-800",   // Black
   R: "bg-red-500",    // Red
-  G: "bg-green-500"   // Green
+  G: "bg-green-500",  // Green
+  C: "bg-gray-400"    // Colorless
 };
 
 const DeckSkeleton = () => (
