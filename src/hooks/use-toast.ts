@@ -83,13 +83,13 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       });
     };
-  }, [toasts]);
+  }, [toasts, dismiss]);
 
-  return {
-    toasts,
-    toast,
-    dismiss
-  };
+  return (
+    <ToastContext.Provider value={{ toasts, toast, dismiss }}>
+      {children}
+    </ToastContext.Provider>
+  );
 };
 
 export const useToast = () => {
