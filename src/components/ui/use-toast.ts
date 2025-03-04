@@ -1,13 +1,14 @@
 
 import { 
   useToast as useHookToast,
-  toast as hookToast,
+  toast as hookToast, 
   ToastProvider as HookToastProvider,
-  ToastProps 
+  ToastProps,
+  ToastActionElement
 } from "@/hooks/use-toast";
 
 // Re-export everything from the hook
 export const useToast = useHookToast;
 export const toast = hookToast;
 export const ToastProvider = HookToastProvider;
-export type { ToastProps };
+export type { ToastProps, ToastActionElement };
