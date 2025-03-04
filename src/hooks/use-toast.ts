@@ -20,7 +20,8 @@ interface ToastContextType {
 
 const ToastContext = React.createContext<ToastContextType | undefined>(undefined);
 
-export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// Create a non-JSX provider component that we'll export
+export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   const [toasts, setToasts] = React.useState<ToastProps[]>([]);
 
   const toast = React.useCallback((props: Omit<ToastProps, "id">) => {
@@ -85,10 +86,16 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
   }, [toasts, dismiss]);
 
-  return (
-    <ToastContext.Provider value={{ toasts, toast, dismiss }}>
-      {children}
-    </ToastContext.Provider>
+  // Create the context value object
+  const contextValue = React.useMemo(() => {
+    return { toasts, toast, dismiss };
+  }, [toasts, toast, dismiss]);
+
+  // Use createElement instead of JSX
+  return React.createElement(
+    ToastContext.Provider,
+    { value: contextValue },
+    children
   );
 };
 
