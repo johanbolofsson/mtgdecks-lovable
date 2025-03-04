@@ -1,4 +1,13 @@
 
-import { useToast, toast, ToastProvider, ToastProps } from "@/hooks/use-toast";
+import { 
+  useToast as useHookToast,
+  toast as hookToast,
+  ToastProvider as HookToastProvider,
+  ToastProps 
+} from "@/hooks/use-toast";
 
-export { useToast, toast, ToastProvider, type ToastProps };
+// Re-export everything from the hook
+export const useToast = useHookToast;
+export const toast = hookToast;
+export const ToastProvider = HookToastProvider;
+export type { ToastProps };

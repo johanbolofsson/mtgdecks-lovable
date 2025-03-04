@@ -1,5 +1,5 @@
 
-import * as React from "react"
+import * as React from "react";
 
 export interface ToastProps {
   id: string;
@@ -85,11 +85,11 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
   }, [toasts]);
 
-  return (
-    <ToastContext.Provider value={{ toasts, toast, dismiss }}>
-      {children}
-    </ToastContext.Provider>
-  );
+  return {
+    toasts,
+    toast,
+    dismiss
+  };
 };
 
 export const useToast = () => {
@@ -103,26 +103,12 @@ export const useToast = () => {
 };
 
 // For standalone usage
-const singletonToast = (() => {
-  let toastFn: ((props: Omit<ToastProps, "id">) => { id: string; dismiss: () => void }) | null = null;
-  
-  return (props: Omit<ToastProps, "id">) => {
-    if (typeof window !== 'undefined') {
-      if (!toastFn) {
-        console.warn('Toast function not initialized yet. Make sure ToastProvider is mounted.');
-        return { id: '', dismiss: () => {} };
-      }
-      return toastFn(props);
-    }
-    // Return dummy for SSR
-    return { id: '', dismiss: () => {} };
-  };
-})();
-
-export const setToastFunction = (fn: (props: Omit<ToastProps, "id">) => { id: string; dismiss: () => void }) => {
+export const toast = (props: Omit<ToastProps, "id">) => {
   if (typeof window !== 'undefined') {
-    (singletonToast as any).toastFn = fn;
+    // This is just for type safety, we'll replace it with the actual implementation in components/ui/use-toast.ts
+    console.warn('Toast function not initialized yet. Make sure ToastProvider is mounted.');
+    return { id: '', dismiss: () => {} };
   }
+  // Return dummy for SSR
+  return { id: '', dismiss: () => {} };
 };
-
-export { singletonToast as toast };
